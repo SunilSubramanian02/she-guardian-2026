@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI Inspired Women Safety Companion 2026">
+    <title>SHEGUARDIAN</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="particles-bg"></div>
+
+    <!-- Navigation -->
+    <header class="glass-nav">
+        <div class="logo">
+            <i class="fa-solid fa-shield-cat"></i> SHEGUARDIAN <span class="year-badge">2026</span>
+        </div>
+        <div class="innovation-toggle" title="Innovation Mode">
+            <span class="toggle-label">Emergency Sim Mode</span>
+            <label class="switch">
+                <input type="checkbox" id="sim-mode-toggle">
+                <span class="slider round"></span>
+            </label>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <!-- 1. Smart SOS Interface -->
+        <section class="sos-section" aria-label="Smart SOS Interface">
+            <div class="sos-container">
+                <button id="sos-btn" class="sos-orb" aria-label="Trigger SOS">
+                    <span class="sos-text">SOS</span>
+                    <div class="pulse-ring"></div>
+                    <div class="pulse-ring delay"></div>
+                </button>
+                <p class="sos-instruction">Hold/Tap in emergency</p>
+            </div>
+        </section>
+
+        <div class="dashboard-grid">
+
+            <!-- 3. Digital Safety Shield Score -->
+            <section class="glass-card flex-col center safety-score-card">
+                <h2>Digital Safety Shield</h2>
+                <div class="score-meter">
+                    <svg viewBox="0 0 36 36" class="circular-chart">
+                        <path class="circle-bg"
+                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                        <path class="circle" stroke-dasharray="0, 100"
+                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                        <text x="18" y="20.35" class="percentage" id="score-text">0%</text>
+                    </svg>
+                </div>
+                <p class="score-message">Your area is currently 72% Safe</p>
+                <div class="score-details">
+                    <span><i class="fa-regular fa-clock"></i> Time: Low Risk</span>
+                    <span><i class="fa-solid fa-location-crosshairs"></i> Zone: Safe</span>
+                </div>
+            </section>
+
+            <!-- 2. Safe Zone Heatmap -->
+            <section class="glass-card heatmap-card">
+                <h2>Safe Zone Heatmap</h2>
+                <div class="map-container">
+                    <div class="mock-map">
+                        <div class="zone red-zone" title="High Risk Area"></div>
+                        <div class="zone yellow-zone" title="Moderate Risk Area"></div>
+                        <div class="zone green-zone" title="Safe Area"></div>
+                        <div class="path-line"></div>
+                        <div class="pulse-marker"></div>
+                    </div>
+                </div>
+                <div class="legend">
+                    <span class="dot green"></span> Safe
+                    <span class="dot yellow"></span> Moderate
+                    <span class="dot red"></span> High Risk
+                </div>
+                <button class="neon-btn btn-route" id="btn-route"><i class="fa-solid fa-route"></i> Find Safest
+                    Route</button>
+            </section>
+
+            <!-- 4. Emergency Contact Vault -->
+            <section class="glass-card vault-card flex-col">
+                <h2>Emergency Vault</h2>
+                <div class="vault-grid">
+                    <div class="contact-card">
+                        <div class="contact-avatar"><i class="fa-solid fa-user-shield"></i></div>
+                        <div class="contact-info">
+                            <p>Dad</p>
+                            <span>+91 9876543210</span>
+                        </div>
+                        <button class="icon-btn" title="Call"><i class="fa-solid fa-phone"></i></button>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-avatar"><i class="fa-solid fa-user-shield"></i></div>
+                        <div class="contact-info">
+                            <p>Brother</p>
+                            <span>+91 9876543211</span>
+                        </div>
+                        <button class="icon-btn" title="Call"><i class="fa-solid fa-phone"></i></button>
+                    </div>
+                </div>
+                <button class="glass-btn btn-small mt-2" style="border: 1px dashed var(--glass-border);"><i
+                        class="fa-solid fa-plus"></i> Add Emergency Contact</button>
+
+                <h3 class="mt-4 sub-heading"><i class="fa-solid fa-clock-rotate-left"></i> Alert History</h3>
+                <ul class="alert-history">
+                    <li>
+                        <div class="history-icon green"><i class="fa-solid fa-route"></i></div>
+                        <div class="history-content">
+                            <p>Safe route taken</p>
+                            <span>2 hrs ago</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="history-icon red"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                        <div class="history-content">
+                            <p>SOS Tested</p>
+                            <span>1 day ago</span>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- New Feature: Active Defense Tools -->
+            <section class="glass-card defense-card flex-col">
+                <h2>Active Defense Tools <span class="badge"
+                        style="font-size: 0.6rem; background: var(--neon-pink); color: white; padding: 2px 6px; border-radius: 10px; margin-left: auto; letter-spacing: 0.5px;">NEW</span>
+                </h2>
+
+                <div class="tool-item mt-2 mb-3">
+                    <div class="tool-header">
+                        <i class="fa-solid fa-phone-volume highlight-blue"></i>
+                        <div>
+                            <h4>Fake Call Generator</h4>
+                            <p class="tool-desc">Escape uncomfortable situations</p>
+                        </div>
+                    </div>
+                    <button class="neon-btn" id="btn-fake-call">Schedule in 5s</button>
+                </div>
+
+                <div class="tool-item">
+                    <div class="tool-header">
+                        <i class="fa-brands fa-space-awesome highlight-pink"></i>
+                        <div>
+                            <h4>Guardian Drone Link</h4>
+                            <p class="tool-desc">Deploy nearest automated safety drone</p>
+                        </div>
+                    </div>
+                    <button class="glass-btn btn-drone mt-2" id="btn-drone"
+                        style="border-color: var(--neon-pink); color: var(--neon-pink);">
+                        <i class="fa-solid fa-satellite-dish"></i> Connect Drone
+                    </button>
+                    <div id="drone-radar" class="radar-container hidden mt-2">
+                        <div class="radar-sweep"></div>
+                        <span class="radar-text">Locating drone...</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. Empowerment Hub -->
+            <section class="glass-card empowerment-card flex-col">
+                <h2>Empowerment Hub</h2>
+                <div class="hub-buttons">
+                    <button class="glass-btn hub-btn"
+                        onclick="alert('Defensive stance, hit vulnerable areas, and shout for help.')">
+                        <i class="fa-solid fa-hand-fist highlight-pink"></i>
+                        <span>Defense Tips</span>
+                    </button>
+                    <button class="glass-btn hub-btn"
+                        onclick="alert('Right to Zero FIR, Right to Privacy, Right to free legal aid.')">
+                        <i class="fa-solid fa-scale-balanced highlight-blue"></i>
+                        <span>Legal Rights</span>
+                    </button>
+                </div>
+
+                <h3 class="mt-4 sub-heading">Quick Access Helplines</h3>
+                <div class="helplines mt-2">
+                    <button class="alert-btn"><i class="fa-solid fa-phone"></i> Police <span>100</span></button>
+                    <button class="alert-btn"><i class="fa-solid fa-phone"></i> Women Helpline <span>181</span></button>
+                    <button class="alert-btn"><i class="fa-solid fa-phone"></i> Cybercrime <span>1930</span></button>
+                </div>
+
+                <div class="quote-box mt-auto">
+                    <p class="inspirational-msg">"You are your best defense. Stay aware, stay strong."</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- SOS Modal -->
+    <div id="sos-modal" class="modal-overlay hidden" role="dialog" aria-modal="true">
+        <div class="modal-content glass-card alert-state">
+            <div class="warning-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <h2 class="alert-title">EMERGENCY ALERT TRIGGERED</h2>
+            <p class="alert-sim-text">Simulated alert sent to emergency contacts & nearby authorities.</p>
+
+            <div class="countdown-circle">
+                <span id="countdown-timer">5</span>
+                <svg>
+                    <circle r="40" cx="50" cy="50"></circle>
+                </svg>
+            </div>
+
+            <div class="emergency-numbers">
+                <p><i class="fa-solid fa-phone phone-icon"></i> Police: <strong>100</strong></p>
+                <p><i class="fa-solid fa-phone phone-icon"></i> Women Helpline: <strong>181</strong></p>
+                <p><i class="fa-solid fa-phone phone-icon"></i> Cybercrime: <strong>1930</strong></p>
+            </div>
+            <button id="cancel-sos" class="glass-btn cancel-btn">CANCEL ALERT (Simulated)</button>
+        </div>
+    </div>
+
+    <!-- Fake Call Modal -->
+    <div id="fake-call-modal" class="modal-overlay hidden" style="z-index: 2000;">
+        <div class="call-modal">
+            <div class="call-info">
+                <h1>Dad</h1>
+                <p>Mobile</p>
+            </div>
+            <div class="call-actions">
+                <button id="btn-decline" class="call-btn btn-decline"><i class="fa-solid fa-phone-slash"></i></button>
+                <button id="btn-answer" class="call-btn btn-answer"><i class="fa-solid fa-phone"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast hidden">
+        <i class="fa-solid fa-bell"></i> <span id="toast-msg">Notification</span>
+    </div>
+
+    <footer>
+        <p>"Technology should not just connect people — it should protect them."</p>
+        <p class="footer-sub">SHEGUARDIAN © 2026 Social Impact Hackathon</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
