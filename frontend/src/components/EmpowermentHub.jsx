@@ -36,18 +36,18 @@ const EmpowermentHub = () => {
             </h3>
 
             <div className="flex flex-col gap-2 mb-6">
-                <a href="tel:100" className="flex items-center justify-between p-3 bg-red-500/10 border border-red-500/20 rounded-lg hover:bg-red-500/20 transition-colors group">
+                <button onClick={() => window.open('tel:100', '_self')} className="w-full flex items-center justify-between p-3 bg-red-500/10 border border-red-500/20 rounded-lg hover:bg-red-500/20 transition-colors group">
                     <span className="flex items-center gap-2 font-medium text-white group-hover:text-red-400"><i className="fa-solid fa-building-shield w-5"></i> Police</span>
                     <span className="font-bold text-red-500 bg-red-500/10 px-3 py-1 rounded-md">100</span>
-                </a>
-                <a href="tel:181" className="flex items-center justify-between p-3 bg-pink-500/10 border border-pink-500/20 rounded-lg hover:bg-pink-500/20 transition-colors group">
+                </button>
+                <button onClick={() => window.open('tel:181', '_self')} className="w-full flex items-center justify-between p-3 bg-pink-500/10 border border-pink-500/20 rounded-lg hover:bg-pink-500/20 transition-colors group">
                     <span className="flex items-center gap-2 font-medium text-white group-hover:text-pink-400"><i className="fa-solid fa-person-dress w-5"></i> Women Helpline</span>
                     <span className="font-bold text-pink-500 bg-pink-500/10 px-3 py-1 rounded-md">181</span>
-                </a>
-                <a href="tel:1930" className="flex items-center justify-between p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg hover:bg-blue-500/20 transition-colors group">
+                </button>
+                <button onClick={() => window.open('tel:1930', '_self')} className="w-full flex items-center justify-between p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg hover:bg-blue-500/20 transition-colors group">
                     <span className="flex items-center gap-2 font-medium text-white group-hover:text-blue-400"><i className="fa-solid fa-laptop-shield w-5"></i> Cybercrime</span>
                     <span className="font-bold text-neon-blue bg-blue-500/10 px-3 py-1 rounded-md">1930</span>
-                </a>
+                </button>
             </div>
 
             <div className="mt-auto px-4 py-3 bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-orange-500/10 rounded-xl border border-white/5 relative overflow-hidden">

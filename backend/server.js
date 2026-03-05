@@ -68,7 +68,34 @@ app.post('/api/route', (req, res) => {
     }, 1500);
 });
 
-// 4. Contacts CRUD
+// 4. Seed Default Data (Run Once)
+app.get('/api/seed', async (req, res) => {
+    try {
+        const defaultContacts = [
+            { name: "Police", phone: "100", relation: "Emergency" },
+            { name: "Women Helpline", phone: "181", relation: "Emergency" },
+            { name: "Cybercrime", phone: "1930", relation: "Emergency" },
+            { name: "Dad", phone: "9876543210", relation: "Guardian" },
+            { name: "Mom", phone: "8765432109", relation: "Guardian" }
+        ];
+
+        const existing = await Contact.find();
+        let inserted = 0;
+
+        for (let contact of defaultContacts) {
+            const exists = existing.some(c => c.name === contact.name || c.phone === contact.phone);
+            if (!exists) {
+                await Contact.create(contact);
+                inserted++;
+            }
+        }
+        res.json({ success: true, message: `Successfully seeded ${inserted} default contacts to the database.` });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Error seeding database" });
+    }
+});
+
+// 5. Contacts CRUD
 app.get('/api/contacts', async (req, res) => {
     try {
         const contacts = await Contact.find();

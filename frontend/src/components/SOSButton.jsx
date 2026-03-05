@@ -215,12 +215,12 @@ const SOSButton = () => {
                         )}
 
                         <div className="w-full flex flex-col gap-3 mb-8">
-                            <a href="tel:100" className="glass-btn justify-center py-3 text-lg hover:bg-white/10 hover:border-red-500/50">
+                            <button onClick={() => window.open('tel:100', '_self')} className="glass-btn justify-center py-3 text-lg hover:bg-white/10 hover:border-red-500/50 w-full">
                                 <i className="fa-solid fa-phone text-red-500"></i> Police: <strong className="ml-1 tracking-wider text-white">100</strong>
-                            </a>
-                            <a href="tel:181" className="glass-btn justify-center py-3 text-lg hover:bg-white/10 hover:border-pink-500/50">
+                            </button>
+                            <button onClick={() => window.open('tel:181', '_self')} className="glass-btn justify-center py-3 text-lg hover:bg-white/10 hover:border-pink-500/50 w-full">
                                 <i className="fa-solid fa-phone text-pink-500"></i> Women Helpline: <strong className="ml-1 tracking-wider text-white">181</strong>
-                            </a>
+                            </button>
                         </div>
 
                         <button onClick={cancelSOS} className="text-gray-400 hover:text-white underline underline-offset-4 decoration-gray-600 hover:decoration-white transition-all py-2 px-4">

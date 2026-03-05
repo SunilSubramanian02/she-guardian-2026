@@ -92,14 +92,14 @@ const EmergencyVault = () => {
                             </div>
 
                             <div className="flex items-center gap-1 shrink-0">
-                                {/* FIX: Wrapping icon in a real anchor tel link so it opens the phone dialer */}
-                                <a
-                                    href={`tel:${contact.phone}`}
+                                {/* FIX: Replaced anchor tag with a button and window.open as mobile browsers sometimes block href="tel:" tags */}
+                                <button
+                                    onClick={() => window.open(`tel:${contact.phone}`, '_self')}
                                     className="w-10 h-10 rounded-lg bg-green-500/10 text-safe-green hover:bg-green-500 hover:text-white flex items-center justify-center transition-colors border border-green-500/20"
                                     title={`Call ${contact.name}`}
                                 >
                                     <i className="fa-solid fa-phone"></i>
-                                </a>
+                                </button>
 
                                 <button
                                     onClick={() => handleDeleteContact(contact._id)}
