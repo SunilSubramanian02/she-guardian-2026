@@ -33,8 +33,8 @@ function App() {
     <div className={`min-h-screen transition-colors duration-500 ${simMode ? 'bg-red-50 dark:bg-[#1a0505]' : 'bg-[var(--bg-primary)]'}`}>
 
       {/* Advanced Animated Background */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPjxyZWN0IHdpZHRoPSI4IiBoZWlnaHQ9IjgiIGZpbGw9IiMwYTBhMGYiPjwvcmVjdD48cGF0aCBkPSJNMCAwbDhfOFpNOCAwbC04IDgiIHN0cm9rZT0iIzFhMWEyNCIgc3Ryb2tlLXdpZHRoPSIxIj48L3BhdGg+PC9zdmc+')] opacity-20">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a0a0f]/80 to-[#0a0a0f]"></div>
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPjxyZWN0IHdpZHRoPSI4IiBoZWlnaHQ9IjgiIGZpbGw9IiMwYTBhMGYiPjwvcmVjdD48cGF0aCBkPSJNMCAwbDhfOFpNOCAwbC04IDgiIHN0cm9rZT0iIzFhMWEyNCIgc3Ryb2tlLXdpZHRoPSIxIj48L3BhdGg+PC9zdmc+')] opacity-5 dark:opacity-20 transition-all duration-500 invert dark:invert-0">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-100/80 to-slate-200 dark:via-[#0a0a0f]/80 dark:to-[#0a0a0f] transition-colors duration-500"></div>
 
         {/* Dynamic Glowing Orbs - Brighter in light mode, deeper in dark mode */}
         <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-blue-400/20 dark:bg-blue-600/10 rounded-full blur-[100px] dark:blur-[120px] mix-blend-normal dark:mix-blend-screen animate-pulse" style={{ animationDuration: '8s' }}></div>
