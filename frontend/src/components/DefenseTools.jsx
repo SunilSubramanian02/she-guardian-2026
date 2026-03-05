@@ -64,8 +64,8 @@ const DefenseTools = () => {
                 <div className="absolute top-10 right-10 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl pointer-events-none group-hover:bg-purple-500/20 transition-colors duration-500"></div>
 
                 <div className="flex justify-between items-start mb-6">
-                    <h2 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400 flex items-center gap-2">
-                        <i className="fa-solid fa-shield-halved"></i> Active Defense
+                    <h2 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500 dark:from-purple-400 dark:to-pink-400 flex items-center gap-2">
+                        <i className="fa-solid fa-shield-halved text-purple-500 dark:text-transparent"></i> Active Defense
                     </h2>
                     <span className="bg-neon-pink/20 border border-neon-pink/40 text-neon-pink text-[0.65rem] font-bold px-2 py-0.5 rounded-full tracking-wider shadow-[0_0_10px_rgba(255,16,122,0.3)]">
                         PRO
@@ -73,24 +73,24 @@ const DefenseTools = () => {
                 </div>
 
                 {/* Fake Call Tool */}
-                <div className="bg-[#0f111a]/50 border border-white/5 rounded-xl p-4 mb-4 hover:border-blue-500/30 transition-colors group/tool relative overflow-hidden">
-                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-400 to-indigo-500 opacity-50 group-hover/tool:opacity-100"></div>
+                <div className="bg-white/50 dark:bg-[#0f111a]/50 border border-gray-200 dark:border-white/5 rounded-xl p-4 mb-4 hover:border-blue-400 dark:hover:border-blue-500/30 transition-colors group/tool relative overflow-hidden shadow-sm dark:shadow-none">
+                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-400 to-indigo-500 opacity-80 dark:opacity-50 group-hover/tool:opacity-100"></div>
 
                     <div className="flex items-start gap-4 mb-3">
-                        <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center shrink-0 border border-blue-500/20 text-neon-blue group-hover/tool:scale-110 transition-transform shadow-[0_0_15px_rgba(0,240,255,0.1)]">
+                        <div className="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center shrink-0 border border-blue-200 dark:border-blue-500/20 text-blue-500 dark:text-neon-blue group-hover/tool:scale-110 transition-transform dark:shadow-[0_0_15px_rgba(0,240,255,0.1)]">
                             <i className="fa-solid fa-phone-volume"></i>
                         </div>
                         <div>
-                            <h4 className="font-semibold text-white tracking-wide">Fake Incoming Call</h4>
-                            <p className="text-xs text-gray-400">Escape uncomfortable situations</p>
+                            <h4 className="font-semibold text-gray-800 dark:text-white tracking-wide">Fake Incoming Call</h4>
+                            <p className="text-xs text-gray-500 dark:text-gray-400">Escape uncomfortable situations</p>
                         </div>
                     </div>
 
                     <button
                         className={`w-full py-2.5 rounded-lg font-medium transition-all duration-300 flex items-center justify-center gap-2
-                            ${callStatus === 'IDLE' ? 'bg-white/5 hover:bg-white/10 text-white border border-white/10 hover:border-white/20' :
-                                callStatus === 'SCHEDULING' ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30 animate-pulse' :
-                                    'bg-green-500/20 text-safe-green border border-green-500/30'}`}
+                            ${callStatus === 'IDLE' ? 'bg-gray-100 hover:bg-gray-200 dark:bg-white/5 dark:hover:bg-white/10 text-gray-700 dark:text-white border border-gray-300 dark:border-white/10 dark:hover:border-white/20' :
+                                callStatus === 'SCHEDULING' ? 'bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 border border-blue-300 dark:border-blue-500/30 animate-pulse' :
+                                    'bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-safe-green border border-green-300 dark:border-green-500/30'}`}
                         onClick={handleFakeCall}
                         disabled={callStatus !== 'IDLE'}
                     >
@@ -101,29 +101,29 @@ const DefenseTools = () => {
                 </div>
 
                 {/* Drone Link Tool */}
-                <div className="bg-[#0f111a]/50 border border-white/5 rounded-xl p-4 hover:border-pink-500/30 transition-colors group/tool relative overflow-hidden">
-                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-pink-400 to-purple-500 opacity-50 group-hover/tool:opacity-100"></div>
+                <div className="bg-white/50 dark:bg-[#0f111a]/50 border border-gray-200 dark:border-white/5 rounded-xl p-4 hover:border-pink-400 dark:hover:border-pink-500/30 transition-colors group/tool relative overflow-hidden shadow-sm dark:shadow-none">
+                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-pink-400 to-purple-500 opacity-80 dark:opacity-50 group-hover/tool:opacity-100"></div>
 
                     <div className="flex items-start gap-4 mb-3">
-                        <div className="w-10 h-10 rounded-lg bg-pink-500/10 flex items-center justify-center shrink-0 border border-pink-500/20 text-neon-pink group-hover/tool:scale-110 transition-transform shadow-[0_0_15px_rgba(255,16,122,0.1)]">
+                        <div className="w-10 h-10 rounded-lg bg-pink-50 dark:bg-pink-500/10 flex items-center justify-center shrink-0 border border-pink-200 dark:border-pink-500/20 text-pink-500 dark:text-neon-pink group-hover/tool:scale-110 transition-transform dark:shadow-[0_0_15px_rgba(255,16,122,0.1)]">
                             <i className="fa-brands fa-space-awesome"></i>
                         </div>
                         <div>
-                            <h4 className="font-semibold text-white tracking-wide">Guardian Drone Link</h4>
-                            <p className="text-xs text-gray-400">Deploy automated safety drone</p>
+                            <h4 className="font-semibold text-gray-800 dark:text-white tracking-wide">Guardian Drone Link</h4>
+                            <p className="text-xs text-gray-500 dark:text-gray-400">Deploy automated safety drone</p>
                         </div>
                     </div>
 
                     {droneStatus === 'IDLE' ? (
                         <button
-                            className="w-full py-2.5 bg-pink-500/10 hover:bg-pink-500/20 text-neon-pink border border-pink-500/30 hover:border-pink-500/50 rounded-lg font-medium transition-all duration-300 flex items-center justify-center gap-2 hover:shadow-[0_0_15px_rgba(255,16,122,0.2)]"
+                            className="w-full py-2.5 bg-pink-50 hover:bg-pink-100 dark:bg-pink-500/10 dark:hover:bg-pink-500/20 text-pink-600 dark:text-neon-pink border border-pink-200 dark:border-pink-500/30 hover:border-pink-300 dark:hover:border-pink-500/50 rounded-lg font-medium transition-all duration-300 flex items-center justify-center gap-2 dark:hover:shadow-[0_0_15px_rgba(255,16,122,0.2)]"
                             onClick={handleDroneLink}
                         >
                             <i className="fa-solid fa-video"></i> Connect Drone
                         </button>
                     ) : (
                         <div className={`relative w-full h-12 rounded-lg border overflow-hidden flex items-center justify-center text-sm font-medium
-                            ${droneStatus === 'EN_ROUTE' ? 'border-green-500/30 bg-green-500/10 text-safe-green blur-0' : 'border-pink-500/30 bg-pink-500/10 text-white'}`}>
+                            ${droneStatus === 'EN_ROUTE' ? 'border-green-300 dark:border-green-500/30 bg-green-50 dark:bg-green-500/10 text-green-600 dark:text-safe-green blur-0' : 'border-pink-300 dark:border-pink-500/30 bg-pink-50 dark:bg-pink-500/10 text-pink-600 dark:text-white'}`}>
 
                             {/* Radar sweep animation */}
                             <div className="absolute inset-0 opacity-30 mix-blend-screen"
@@ -146,19 +146,19 @@ const DefenseTools = () => {
 
             {/* Fake Call Full Screen Modal */}
             {(callStatus === 'INCOMING' || callStatus === 'ACTIVE') && (
-                <div className="fixed inset-0 bg-[#0a0a0f] z-[2000] flex flex-col justify-between items-center py-16 animate-in slide-in-from-bottom-full duration-300">
+                <div className="fixed inset-0 bg-white dark:bg-[#0a0a0f] z-[2000] flex flex-col justify-between items-center py-16 animate-in slide-in-from-bottom-full duration-300">
 
                     <div className="flex flex-col items-center mt-12 text-center w-full px-8">
                         {/* Caller display */}
-                        <div className="w-24 h-24 bg-gray-800 rounded-full flex items-center justify-center mb-6 border-2 border-gray-700 shadow-xl relative backdrop-blur-md">
+                        <div className="w-24 h-24 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-6 border-2 border-gray-300 dark:border-gray-700 shadow-xl relative backdrop-blur-md">
                             <i className="fa-solid fa-user text-4xl text-gray-400"></i>
                             {callStatus === 'INCOMING' && (
                                 <div className="absolute inset-0 rounded-full border-2 border-blue-500 animate-ping opacity-50"></div>
                             )}
                         </div>
 
-                        <h1 className="text-4xl font-normal text-white mb-2 tracking-wide">Dad</h1>
-                        <p className="text-lg text-gray-400 font-light tracking-widest">
+                        <h1 className="text-4xl font-normal text-gray-900 dark:text-white mb-2 tracking-wide">Dad</h1>
+                        <p className="text-lg text-gray-600 dark:text-gray-400 font-light tracking-widest">
                             {callStatus === 'INCOMING' ? 'Mobile' : `${activeMins.toString().padStart(2, '0')}:${activeSecs.toString().padStart(2, '0')}`}
                         </p>
                     </div>

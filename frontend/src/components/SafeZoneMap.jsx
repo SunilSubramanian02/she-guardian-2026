@@ -34,19 +34,19 @@ const SafeZoneMap = () => {
 
     return (
         <section className="glass-card p-6 w-full relative overflow-hidden group">
-            <h2 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500 mb-4 flex items-center gap-2">
+            <h2 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-600 dark:from-purple-400 dark:to-pink-500 mb-4 flex items-center gap-2">
                 <i className="fa-solid fa-map-location-dot"></i> Safe Zone Heatmap
             </h2>
 
-            <div className="w-full h-48 rounded-xl bg-[#0f111a] border border-white/10 relative overflow-hidden shadow-inner mb-4">
+            <div className="w-full h-48 rounded-xl bg-gray-100 dark:bg-[#0f111a] border border-gray-200 dark:border-white/10 relative overflow-hidden shadow-inner mb-4 transition-colors">
                 {/* Abstract Data Map Background */}
-                <div className="absolute inset-0 opacity-20" style={{
-                    backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
+                <div className="absolute inset-0 opacity-10 dark:opacity-20 transition-opacity" style={{
+                    backgroundImage: 'radial-gradient(circle at 2px 2px, currentColor 1px, transparent 0)',
                     backgroundSize: '20px 20px'
                 }}></div>
 
                 {/* Map Grid Lines */}
-                <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
+                <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.05)_1px,transparent_1px)] dark:bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
 
                 {/* Heatmap Zones */}
                 <div className="absolute top-[20%] left-[60%] w-24 h-24 bg-red-600/30 rounded-full blur-2xl animate-pulse"></div>
@@ -80,7 +80,7 @@ const SafeZoneMap = () => {
                 )}
             </div>
 
-            <div className="flex justify-between items-center text-xs text-gray-400 mb-6 bg-white/5 rounded-lg px-3 py-2 border border-white/5">
+            <div className="flex justify-between items-center text-xs text-gray-600 dark:text-gray-400 mb-6 bg-white dark:bg-white/5 rounded-lg px-3 py-2 border border-gray-200 dark:border-white/5 shadow-sm dark:shadow-none transition-colors">
                 <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_5px_rgba(34,197,94,0.6)]"></span> Safe</span>
                 <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-[0_0_5px_rgba(245,158,11,0.6)]"></span> Moderate</span>
                 <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_5px_rgba(239,68,68,0.6)]"></span> High Risk</span>
@@ -88,10 +88,10 @@ const SafeZoneMap = () => {
 
             <button
                 className={`w-full py-3.5 px-4 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all duration-300 border backdrop-blur-sm
-                    ${routeStatus === 'IDLE' ? 'bg-white/10 text-white border-white/20 hover:bg-white/20 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)]' : ''}
-                    ${routeStatus === 'LOADING' ? 'bg-blue-500/20 text-blue-400 border-blue-500/30 cursor-wait' : ''}
-                    ${routeStatus === 'FOUND' ? 'bg-green-500/20 text-safe-green border-green-500/30 shadow-[0_0_20px_rgba(34,197,94,0.15)]' : ''}
-                    ${routeStatus === 'ERROR' ? 'bg-red-500/20 text-red-400 border-red-500/30' : ''}
+                    ${routeStatus === 'IDLE' ? 'bg-gray-100 dark:bg-white/10 text-gray-700 dark:text-white border-gray-300 dark:border-white/20 hover:bg-gray-200 dark:hover:bg-white/20 hover:shadow-md dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.1)]' : ''}
+                    ${routeStatus === 'LOADING' ? 'bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 border-blue-300 dark:border-blue-500/30 cursor-wait' : ''}
+                    ${routeStatus === 'FOUND' ? 'bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-safe-green border-green-300 dark:border-green-500/30 shadow-[0_0_20px_rgba(34,197,94,0.15)]' : ''}
+                    ${routeStatus === 'ERROR' ? 'bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400 border-red-300 dark:border-red-500/30' : ''}
                 `}
                 onClick={handleRouteFinder}
                 disabled={routeStatus === 'LOADING'}

@@ -163,7 +163,7 @@ const SOSButton = () => {
                         )}
                     </button>
 
-                    <p className={`mt-8 text-lg font-medium tracking-wide transition-colors ${status === 'HOLDING' ? 'text-neon-pink' : 'text-gray-300'}`}>
+                    <p className={`mt-8 text-lg font-medium tracking-wide transition-colors ${status === 'HOLDING' ? 'text-neon-pink' : 'text-gray-600 dark:text-gray-300'}`}>
                         {status === 'HOLDING' ? 'Keep holding...' : 'Hold for 2 seconds to activate'}
                     </p>
                 </div>
@@ -171,8 +171,8 @@ const SOSButton = () => {
 
             {/* SOS Modal */}
             {status !== 'IDLE' && status !== 'HOLDING' && (
-                <div role="dialog" aria-modal="true" className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-                    <div className="glass-card w-full max-w-md p-8 flex flex-col items-center text-center relative overflow-hidden">
+                <div role="dialog" aria-modal="true" className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/60 dark:bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
+                    <div className="glass-card w-full max-w-md p-8 flex flex-col items-center text-center relative overflow-hidden shadow-2xl">
 
                         {/* Animated background flashes */}
                         {status === 'COUNTDOWN' && <div className="absolute inset-0 bg-red-500/10 animate-pulse pointer-events-none"></div>}
@@ -195,7 +195,7 @@ const SOSButton = () => {
                                     'DISPATCH FAILED'}
                         </h2>
 
-                        <p className="text-gray-300 mb-8 px-4">
+                        <p className="text-gray-700 dark:text-gray-300 mb-8 px-4 font-medium">
                             {status === 'COUNTDOWN' ? 'Sending live location to emergency contacts and authorities in...' :
                                 status === 'DISPATCHED' ? 'Authorities and emergency contacts have been notified with your live location.' :
                                     'Network error. Please try calling authorities directly using the buttons below.'}
@@ -215,15 +215,15 @@ const SOSButton = () => {
                         )}
 
                         <div className="w-full flex flex-col gap-3 mb-8">
-                            <button onClick={() => window.open('tel:100', '_self')} className="glass-btn justify-center py-3 text-lg hover:bg-white/10 hover:border-red-500/50 w-full">
-                                <i className="fa-solid fa-phone text-red-500"></i> Police: <strong className="ml-1 tracking-wider text-white">100</strong>
+                            <button onClick={() => window.open('tel:100', '_self')} className="glass-btn justify-center py-3 text-lg hover:border-red-500/50 w-full group">
+                                <i className="fa-solid fa-phone text-red-500 group-hover:scale-110 transition-transform"></i> Police: <strong className="ml-1 tracking-wider text-gray-800 dark:text-white">100</strong>
                             </button>
-                            <button onClick={() => window.open('tel:181', '_self')} className="glass-btn justify-center py-3 text-lg hover:bg-white/10 hover:border-pink-500/50 w-full">
-                                <i className="fa-solid fa-phone text-pink-500"></i> Women Helpline: <strong className="ml-1 tracking-wider text-white">181</strong>
+                            <button onClick={() => window.open('tel:181', '_self')} className="glass-btn justify-center py-3 text-lg hover:border-pink-500/50 w-full group">
+                                <i className="fa-solid fa-phone text-pink-500 group-hover:scale-110 transition-transform"></i> Women Helpline: <strong className="ml-1 tracking-wider text-gray-800 dark:text-white">181</strong>
                             </button>
                         </div>
 
-                        <button onClick={cancelSOS} className="text-gray-400 hover:text-white underline underline-offset-4 decoration-gray-600 hover:decoration-white transition-all py-2 px-4">
+                        <button onClick={cancelSOS} className="text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white underline underline-offset-4 decoration-gray-400 dark:decoration-gray-600 hover:decoration-gray-800 dark:hover:decoration-white transition-all py-2 px-4 font-medium">
                             {status === 'COUNTDOWN' ? 'Cancel Alert' : 'Close Dashboard'}
                         </button>
                     </div>

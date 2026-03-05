@@ -4,16 +4,40 @@
 
 @layer base {
     :root {
+        /* Light Theme (Default) */
+        --safe-green: #22c55e;
+        /* Tailwind green-500 */
+        --neon-pink: #ec4899;
+        /* Tailwind pink-500 */
+        --neon-blue: #3b82f6;
+        /* Tailwind blue-500 */
+        --bg-primary: #f8fafc;
+        /* Very light slate */
+        --bg-secondary: #f1f5f9;
+        --glass-bg: rgba(255, 255, 255, 0.7);
+        --glass-border: rgba(0, 0, 0, 0.05);
+        --text-main: #0f172a;
+        --text-muted: #64748b;
+    }
+
+    .dark {
+        /* Dark Theme (Neon) */
         --safe-green: #39ff14;
         --neon-pink: #ff107a;
         --neon-blue: #00f0ff;
-        --dark-bg: #0a0a0f;
+        --bg-primary: #0a0a0f;
+        --bg-secondary: #0f111a;
         --glass-bg: rgba(255, 255, 255, 0.05);
         --glass-border: rgba(255, 255, 255, 0.1);
+        --text-main: #ffffff;
+        --text-muted: #9ca3af;
     }
 
     body {
-        @apply bg-gray-950 text-white font-sans overflow-x-hidden min-h-screen;
+        @apply bg-[var(--bg-primary)] text-[var(--text-main)] font-sans overflow-x-hidden min-h-screen transition-colors duration-500;
+    }
+
+    .dark body {
         background-image:
             radial-gradient(circle at 15% 50%, rgba(200, 200, 255, 0.08) 0%, transparent 50%),
             radial-gradient(circle at 85% 30%, rgba(0, 240, 255, 0.05) 0%, transparent 50%);
@@ -42,7 +66,7 @@
 
     /* Glassmorphism Classes */
     .glass-card {
-        @apply bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow-xl transition-all duration-300;
+        @apply bg-[var(--glass-bg)] backdrop-blur-md border border-[var(--glass-border)] rounded-2xl shadow-lg dark:shadow-xl transition-all duration-300;
     }
 
     .glass-card:hover {
@@ -53,16 +77,25 @@
     /* Glowing Neon Text */
     .text-neon-pink {
         color: var(--neon-pink);
+    }
+
+    .dark .text-neon-pink {
         text-shadow: 0 0 10px rgba(255, 16, 122, 0.5);
     }
 
     .text-neon-green {
         color: var(--safe-green);
+    }
+
+    .dark .text-neon-green {
         text-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
     }
 
     .text-neon-blue {
         color: var(--neon-blue);
+    }
+
+    .dark .text-neon-blue {
         text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
     }
 
@@ -81,7 +114,20 @@
     }
 
     .glass-btn {
-        @apply bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-2 hover:bg-white/20 transition-all duration-300 flex items-center gap-2;
+        @apply border rounded-xl px-4 py-2 transition-all duration-300 flex items-center gap-2;
+        background-color: var(--glass-bg);
+        border-color: var(--glass-border);
+    }
+
+    .glass-btn:hover {
+        @apply shadow-md transform -translate-y-[1px];
+        background-color: rgba(0, 0, 0, 0.05);
+        /* Light hover */
+    }
+
+    .dark .glass-btn:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        /* Dark hover */
     }
 
     .icon-btn {
