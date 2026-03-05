@@ -8,8 +8,7 @@ const SafetyScore = () => {
     useEffect(() => {
         const fetchScore = async () => {
             try {
-                const apiUrl = import.meta.env.VITE_API_BASE_URL;
-                if (!apiUrl) throw new Error("API URL not configured");
+                const apiUrl = import.meta.env.VITE_API_BASE_URL || 'https://she-guardian-2026.onrender.com';
 
                 const res = await fetch(`${apiUrl}/api/safety-score`);
                 const data = await res.json();

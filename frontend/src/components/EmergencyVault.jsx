@@ -13,8 +13,7 @@ const EmergencyVault = () => {
     const fetchContacts = async () => {
         setLoading(true);
         try {
-            const apiUrl = import.meta.env.VITE_API_BASE_URL;
-            if (!apiUrl) throw new Error("API URL not configured");
+            const apiUrl = import.meta.env.VITE_API_BASE_URL || 'https://she-guardian-2026.onrender.com';
 
             const res = await fetch(`${apiUrl}/api/contacts`);
             const data = await res.json();
@@ -29,8 +28,7 @@ const EmergencyVault = () => {
     const handleAddContact = async (e) => {
         e.preventDefault();
         try {
-            const apiUrl = import.meta.env.VITE_API_BASE_URL;
-            if (!apiUrl) return;
+            const apiUrl = import.meta.env.VITE_API_BASE_URL || 'https://she-guardian-2026.onrender.com';
 
             const res = await fetch(`${apiUrl}/api/contacts`, {
                 method: 'POST',
@@ -50,8 +48,7 @@ const EmergencyVault = () => {
 
     const handleDeleteContact = async (id) => {
         try {
-            const apiUrl = import.meta.env.VITE_API_BASE_URL;
-            if (!apiUrl) return;
+            const apiUrl = import.meta.env.VITE_API_BASE_URL || 'https://she-guardian-2026.onrender.com';
 
             const res = await fetch(`${apiUrl}/api/contacts/${id}`, {
                 method: 'DELETE'

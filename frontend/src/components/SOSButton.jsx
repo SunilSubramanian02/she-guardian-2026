@@ -78,9 +78,8 @@ const SOSButton = () => {
 
     const executeDispatch = async () => {
         try {
-            // Check if backend URL is available
-            const apiUrl = import.meta.env.VITE_API_BASE_URL;
-            if (!apiUrl) throw new Error("API URL not configured");
+            // Check if backend URL is available, fallback to render if not set in Vercel
+            const apiUrl = import.meta.env.VITE_API_BASE_URL || 'https://she-guardian-2026.onrender.com';
 
             const res = await fetch(`${apiUrl}/api/sos`, {
                 method: 'POST',

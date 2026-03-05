@@ -22,11 +22,16 @@ function App() {
   return (
     <div className={`min-h-screen transition-colors duration-500 ${simMode ? 'bg-[#1a0505]' : 'bg-gray-950'}`}>
 
-      {/* Animated Background Layout */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-900/10 rounded-full blur-[120px]"></div>
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-pink-900/10 rounded-full blur-[120px]"></div>
-        {simMode && <div className="absolute inset-0 bg-red-900/10 transition-opacity duration-1000"></div>}
+      {/* Advanced Animated Background */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPjxyZWN0IHdpZHRoPSI4IiBoZWlnaHQ9IjgiIGZpbGw9IiMwYTBhMGYiPjwvcmVjdD48cGF0aCBkPSJNMCAwbDhfOFpNOCAwbC04IDgiIHN0cm9rZT0iIzFhMWEyNCIgc3Ryb2tlLXdpZHRoPSIxIj48L3BhdGg+PC9zdmc+')] opacity-20">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a0a0f]/80 to-[#0a0a0f]"></div>
+
+        {/* Dynamic Glowing Orbs */}
+        <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-blue-600/10 rounded-full blur-[120px] mix-blend-screen animate-pulse" style={{ animationDuration: '8s' }}></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40vw] h-[40vw] bg-pink-600/10 rounded-full blur-[120px] mix-blend-screen animate-pulse" style={{ animationDuration: '12s', animationDelay: '2s' }}></div>
+        <div className="absolute top-[40%] left-[60%] w-[30vw] h-[30vw] bg-purple-600/10 rounded-full blur-[100px] mix-blend-screen animate-pulse" style={{ animationDuration: '10s', animationDelay: '5s' }}></div>
+
+        {simMode && <div className="absolute inset-0 bg-red-900/15 mix-blend-overlay transition-opacity duration-1000"></div>}
       </div>
 
       {/* Navigation */}
