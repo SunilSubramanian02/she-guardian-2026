@@ -15,17 +15,56 @@ import HubPage from './pages/HubPage';
 
 function App() {
   const [simMode, setSimMode] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(true);
   const [isPanicMode, setIsPanicMode] = useState(false);
 
-  // Apply dark mode class to HTML root
+  // Read initial theme preference from localStorage or default to 'system'
+  const [themeMode, setThemeMode] = useState(() => localStorage.getItem('theme') || 'system');
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // Listen to system theme changes and apply
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    
+    const applyTheme = () => {
+      if (themeMode === 'system') {
+        setIsDarkMode(mediaQuery.matches);
+      } else {
+        setIsDarkMode(themeMode === 'dark');
+      }
+    };
+
+    applyTheme();
+
+    const listener = (e) => {
+      if (themeMode === 'system') {
+        setIsDarkMode(e.matches);
+      }
+    };
+    
+    mediaQuery.addEventListener('change', listener);
+    return () => mediaQuery.removeEventListener('change', listener);
+  }, [themeMode]);
+
+  // Apply dark mode class to HTML root and update PWA theme color
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
     }
+    
+    // Update Theme color meta tag for PWA
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (metaThemeColor) {
+      metaThemeColor.setAttribute('content', isDarkMode ? '#030014' : '#f8fafc');
+    }
   }, [isDarkMode]);
+
+  const cycleTheme = () => {
+    const nextMode = themeMode === 'system' ? 'light' : themeMode === 'light' ? 'dark' : 'system';
+    setThemeMode(nextMode);
+    localStorage.setItem('theme', nextMode);
+  };
 
   const handleSimModeToggle = (e) => {
     setSimMode(e.target.checked);
@@ -70,11 +109,14 @@ function App() {
         <div className="flex items-center gap-4">
           {/* Theme Toggle */}
           <button
-            onClick={() => setIsDarkMode(!isDarkMode)}
-            className="w-10 h-10 rounded-full bg-[var(--glass-bg)] border border-[var(--glass-border)] flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors shadow-sm"
+            onClick={cycleTheme}
+            className="w-10 h-10 rounded-full bg-[var(--glass-bg)] border border-[var(--glass-border)] flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors shadow-sm relative group"
             aria-label="Toggle Theme"
+            title={`Current: ${themeMode} theme`}
           >
-            {isDarkMode ? <i className="fa-solid fa-sun hover:text-yellow-400 transition-colors"></i> : <i className="fa-solid fa-moon hover:text-indigo-500 transition-colors"></i>}
+            {themeMode === 'system' ? <i className="fa-solid fa-desktop hover:text-blue-400 transition-colors"></i> : 
+             themeMode === 'light' ? <i className="fa-solid fa-sun hover:text-yellow-400 transition-colors"></i> : 
+             <i className="fa-solid fa-moon hover:text-indigo-500 transition-colors"></i>}
           </button>
 
           {/* Sim Mode Toggle */}
