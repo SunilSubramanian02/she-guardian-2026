@@ -105,12 +105,33 @@ const SOSButton = ({ setPanicMode }) => {
                 setStatus('DISPATCHED');
                 if (navigator.vibrate) navigator.vibrate([500, 200, 500]);
             } else {
-                setStatus('FAILED');
+                throw new Error("Backend dispatch failed");
             }
         } catch (error) {
-            console.error("SOS Fetch Error", error);
+            console.error("SOS Fetch Error! Activating Offline SMS Fallback.", error);
             setStatus('FAILED');
+            
+            // --- OFFLINE SMS FALLBACK ---
+            let locationData = "Unknown";
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(
+                    pos => {
+                        locationData = `${pos.coords.latitude},${pos.coords.longitude}`;
+                        triggerSMS(locationData);
+                    },
+                    err => triggerSMS(locationData),
+                    { timeout: 3000 }
+                );
+            } else {
+                triggerSMS(locationData);
+            }
         }
+    };
+
+    const triggerSMS = (loc) => {
+        const message = encodeURIComponent(`EMERGENCY SOS! I need help immediately. My last known location is: https://maps.google.com/?q=${loc}`);
+        const emergencyContacts = "100,181,9876543210";
+        window.location.href = `sms:${emergencyContacts}?body=${message}`;
     };
 
     const cancelSOS = () => {

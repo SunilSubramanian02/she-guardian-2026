@@ -76,28 +76,30 @@ app.post('/api/route', (req, res) => {
     }, 1500);
 });
 
-// 4. Audio Danger Analysis (Gemini AI)
-app.post('/api/audio-analysis', upload.single('audio'), async (req, res) => {
+// 4. Video/Audio Danger Analysis & Evidence Collection (Gemini AI)
+app.post('/api/evidence', upload.single('evidence'), async (req, res) => {
     try {
         if (!req.file) {
-            return res.status(400).json({ success: false, message: 'No audio file uploaded.' });
+            return res.status(400).json({ success: false, message: 'No evidence file uploaded.' });
         }
 
-        console.log(`\n🎙️ [AUDIO] Received audio chunk for analysis. Size: ${req.file.size} bytes`);
+        console.log(`\n📹 [EVIDENCE] Received Video/Audio chunk for analysis & storage. Size: ${req.file.size} bytes`);
+        // In a real production app, you would simultaneously upload req.file.buffer to AWS S3 / Cloudinary here
+        // so that the evidence is safely stored away from the attacker's physical phone.
 
         if (!process.env.GEMINI_API_KEY) {
             console.warn('⚠️ GEMINI_API_KEY is not set. Returning mocked danger analysis.');
             return res.json({ 
                 success: true, 
-                analysis: 'MOCKED RESPONSE: Audio levels appear normal. No explicit danger detected in simulation.' 
+                analysis: 'MOCKED RESPONSE: Evidence securely locked in cloud. Video/Audio analysis shows potential environmental threat.' 
             });
         }
 
         // Convert buffer to base64 for Gemini API
         const base64Data = req.file.buffer.toString('base64');
-        const mimeType = req.file.mimetype || 'audio/webm';
+        const mimeType = req.file.mimetype || 'video/webm';
 
-        const prompt = "You are a crisis analysis AI. Analyze this short audio clip recorded during an emergency SOS activation. Look for indicators of struggle, aggressive voices, screaming, or environmental hazards. Respond with a concise 1-2 sentence risk assessment.";
+        const prompt = "You are a crisis analysis AI. Analyze this short video/audio clip recorded during an emergency SOS activation. Look for indicators of struggle, aggressive voices, screaming, weapons, or environmental hazards. Respond with a concise 1-2 sentence risk assessment to be relayed to emergency responders.";
 
         const response = await ai.models.generateContent({
             model: 'gemini-2.5-flash',
@@ -113,13 +115,13 @@ app.post('/api/audio-analysis', upload.single('audio'), async (req, res) => {
         });
 
         const analysisResult = response.text;
-        console.log(`🧠 [GEMINI ANALYSIS]: ${analysisResult}`);
+        console.log(`🧠 [GEMINI EVIDENCE ANALYSIS]: ${analysisResult}`);
 
         res.json({ success: true, analysis: analysisResult });
 
     } catch (error) {
-        console.error('Error during audio analysis:', error);
-        res.status(500).json({ success: false, message: 'Failed to analyze audio.' });
+        console.error('Error during evidence analysis:', error);
+        res.status(500).json({ success: false, message: 'Failed to analyze evidence.' });
     }
 });
 

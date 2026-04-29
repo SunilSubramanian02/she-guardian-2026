@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 
 const SafeZoneMap = () => {
     const [routeStatus, setRouteStatus] = useState('IDLE'); // IDLE, LOADING, FOUND, ERROR
+    const [reportedZones, setReportedZones] = useState([]); // Array of { id, top, left }
+    const [isReporting, setIsReporting] = useState(false);
 
     const handleRouteFinder = async () => {
         setRouteStatus('LOADING');
@@ -53,6 +55,13 @@ const SafeZoneMap = () => {
                 <div className="absolute top-[50%] left-[20%] w-32 h-32 bg-amber-500/30 rounded-full blur-2xl"></div>
                 <div className="absolute bottom-[10%] right-[15%] w-40 h-40 bg-green-500/20 rounded-full blur-2xl"></div>
 
+                {/* Crowdsourced Reported Zones */}
+                {reportedZones.map(zone => (
+                    <div key={zone.id} className="absolute w-20 h-20 bg-red-600/60 rounded-full blur-xl animate-pulse flex items-center justify-center z-20" style={{ top: zone.top, left: zone.left, transform: 'translate(-50%, -50%)' }}>
+                        <i className="fa-solid fa-triangle-exclamation text-white/50 text-xs shadow-black drop-shadow-md"></i>
+                    </div>
+                ))}
+
                 {/* Animated Route Path */}
                 <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ opacity: routeStatus === 'FOUND' ? 1 : 0, transition: 'opacity 0.5s ease-in-out' }}>
                     <path
@@ -86,21 +95,44 @@ const SafeZoneMap = () => {
                 <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_5px_rgba(239,68,68,0.6)]"></span> High Risk</span>
             </div>
 
-            <button
-                className={`w-full py-3.5 px-4 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all duration-300 border backdrop-blur-sm
-                    ${routeStatus === 'IDLE' ? 'bg-gray-100 dark:bg-white/10 text-gray-700 dark:text-white border-gray-300 dark:border-white/20 hover:bg-gray-200 dark:hover:bg-white/20 hover:shadow-md dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.1)]' : ''}
-                    ${routeStatus === 'LOADING' ? 'bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 border-blue-300 dark:border-blue-500/30 cursor-wait' : ''}
-                    ${routeStatus === 'FOUND' ? 'bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-safe-green border-green-300 dark:border-green-500/30 shadow-[0_0_20px_rgba(34,197,94,0.15)]' : ''}
-                    ${routeStatus === 'ERROR' ? 'bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400 border-red-300 dark:border-red-500/30' : ''}
-                `}
-                onClick={handleRouteFinder}
-                disabled={routeStatus === 'LOADING'}
-            >
-                {routeStatus === 'IDLE' && <><i className="fa-solid fa-route"></i> Find Safest Route</>}
-                {routeStatus === 'LOADING' && <><i className="fa-solid fa-satellite-dish animate-pulse"></i> Analyzing Live Data...</>}
-                {routeStatus === 'FOUND' && <><i className="fa-solid fa-shield-check"></i> Safest Route Generated</>}
-                {routeStatus === 'ERROR' && <><i className="fa-solid fa-triangle-exclamation"></i> Network Error - Try Again</>}
-            </button>
+            <div className="flex flex-col sm:flex-row gap-3">
+                <button
+                    className={`flex-1 py-3.5 px-4 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all duration-300 border backdrop-blur-sm
+                        ${routeStatus === 'IDLE' ? 'bg-gray-100 dark:bg-white/10 text-gray-700 dark:text-white border-gray-300 dark:border-white/20 hover:bg-gray-200 dark:hover:bg-white/20 hover:shadow-md dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.1)]' : ''}
+                        ${routeStatus === 'LOADING' ? 'bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 border-blue-300 dark:border-blue-500/30 cursor-wait' : ''}
+                        ${routeStatus === 'FOUND' ? 'bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-safe-green border-green-300 dark:border-green-500/30 shadow-[0_0_20px_rgba(34,197,94,0.15)]' : ''}
+                        ${routeStatus === 'ERROR' ? 'bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400 border-red-300 dark:border-red-500/30' : ''}
+                    `}
+                    onClick={handleRouteFinder}
+                    disabled={routeStatus === 'LOADING'}
+                >
+                    {routeStatus === 'IDLE' && <><i className="fa-solid fa-route"></i> Find Safest Route</>}
+                    {routeStatus === 'LOADING' && <><i className="fa-solid fa-satellite-dish animate-pulse"></i> Analyzing...</>}
+                    {routeStatus === 'FOUND' && <><i className="fa-solid fa-shield-check"></i> Route Found</>}
+                    {routeStatus === 'ERROR' && <><i className="fa-solid fa-triangle-exclamation"></i> Error</>}
+                </button>
+
+                <button
+                    className={`flex-1 py-3.5 px-4 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all duration-300 border backdrop-blur-sm bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 border-red-200 dark:border-red-900/50 hover:bg-red-100 dark:hover:bg-red-900/40`}
+                    onClick={() => {
+                        setIsReporting(true);
+                        setTimeout(() => {
+                            // Mocking GPS pin drop slightly randomly near the center
+                            const newZone = {
+                                id: Date.now(),
+                                top: `${Math.floor(Math.random() * 60) + 20}%`,
+                                left: `${Math.floor(Math.random() * 60) + 20}%`
+                            };
+                            setReportedZones([...reportedZones, newZone]);
+                            setIsReporting(false);
+                            if(navigator.vibrate) navigator.vibrate(100);
+                        }, 800);
+                    }}
+                    disabled={isReporting}
+                >
+                    {isReporting ? <><i className="fa-solid fa-spinner animate-spin"></i> Submitting...</> : <><i className="fa-solid fa-map-pin"></i> Report Danger</>}
+                </button>
+            </div>
         </section>
     );
 };

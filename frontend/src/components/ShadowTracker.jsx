@@ -110,7 +110,11 @@ const ShadowTracker = ({ setPanicMode }) => {
             const data = await res.json();
             console.log("Auto-SOS Dispatch Result:", data);
         } catch (error) {
-            console.error("Auto-SOS Fetch Error", error);
+            console.error("Auto-SOS Fetch Error! Activating Offline SMS Fallback.", error);
+            // --- OFFLINE SMS FALLBACK ---
+            const message = encodeURIComponent(`URGENT: SHADOW TRACKER TIMEOUT! I haven't checked in for 10 minutes. Last location: https://maps.google.com/?q=${lastLocation || 'Unknown'}`);
+            const emergencyContacts = "100,181,9876543210";
+            window.location.href = `sms:${emergencyContacts}?body=${message}`;
         }
     };
 

@@ -27,19 +27,29 @@ const AudioVisualizer = ({ isActive }) => {
 
     const startAudio = async () => {
         try {
-            setRecordingStatus('Initializing...');
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+            setRecordingStatus('Initializing Camera & Mic...');
+            // Request both audio and video for the evidence locker (prefer back camera)
+            const stream = await navigator.mediaDevices.getUserMedia({ 
+                audio: true, 
+                video: { facingMode: "environment", width: 640, height: 480 } 
+            });
             streamRef.current = stream;
 
-            // Setup Web Audio API for visualization
+            // Setup Web Audio API for visualization (extract audio track)
             audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)();
             analyserRef.current = audioContextRef.current.createAnalyser();
             analyserRef.current.fftSize = 64; // Gives us 32 frequency bins
             sourceRef.current = audioContextRef.current.createMediaStreamSource(stream);
             sourceRef.current.connect(analyserRef.current);
 
-            // Setup MediaRecorder for background recording
-            mediaRecorderRef.current = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+            // Setup MediaRecorder for background VIDEO recording
+            // Use video/webm to capture both audio and video tracks
+            let mimeType = 'video/webm';
+            if (!MediaRecorder.isTypeSupported(mimeType)) {
+                 mimeType = 'video/mp4'; // fallback
+            }
+
+            mediaRecorderRef.current = new MediaRecorder(stream, { mimeType });
             mediaRecorderRef.current.ondataavailable = (event) => {
                 if (event.data.size > 0) {
                     audioChunksRef.current.push(event.data);
@@ -98,16 +108,17 @@ const AudioVisualizer = ({ isActive }) => {
     const sendAudioToBackend = async () => {
         if (audioChunksRef.current.length === 0) return;
 
-        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+        // Blob now contains Video + Audio
+        const videoBlob = new Blob(audioChunksRef.current, { type: mediaRecorderRef.current.mimeType });
         audioChunksRef.current = []; // reset
 
         const formData = new FormData();
-        formData.append('audio', audioBlob, 'sos-audio.webm');
+        formData.append('evidence', videoBlob, 'sos-evidence.webm');
         formData.append('timestamp', new Date().toISOString());
 
         try {
-            const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
-            const response = await fetch(`${apiUrl}/api/audio-analysis`, {
+            const apiUrl = import.meta.env.VITE_API_BASE_URL || 'https://she-guardian-2026.onrender.com';
+            const response = await fetch(`${apiUrl}/api/evidence`, {
                 method: 'POST',
                 body: formData,
             });
@@ -168,7 +179,7 @@ const AudioVisualizer = ({ isActive }) => {
             </div>
             
             <p className="mt-6 text-xs text-neon-blue/70 font-mono text-center max-w-xs">
-                Capturing environmental audio for AI danger analysis and evidence preservation.
+                Capturing environmental audio & video for AI danger analysis and encrypted evidence preservation.
             </p>
         </div>
     );
