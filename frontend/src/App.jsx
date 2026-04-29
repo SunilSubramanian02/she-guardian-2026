@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import './index.css';
 
-import SOSButton from './components/SOSButton';
-import SafetyScore from './components/SafetyScore';
-import SafeZoneMap from './components/SafeZoneMap';
-import EmergencyVault from './components/EmergencyVault';
-import DefenseTools from './components/DefenseTools';
-import EmpowermentHub from './components/EmpowermentHub';
-import ShadowTracker from './components/ShadowTracker';
 import AIChatbot from './components/AIChatbot';
 import StealthExit from './components/StealthExit';
+import BottomNav from './components/BottomNav';
+
+// Pages
+import Home from './pages/Home';
+import MapPage from './pages/MapPage';
+import DefensePage from './pages/DefensePage';
+import VaultPage from './pages/VaultPage';
+import HubPage from './pages/HubPage';
 
 function App() {
   const [simMode, setSimMode] = useState(false);
@@ -88,7 +90,7 @@ function App() {
         </div>
       </header>
 
-      <main className="relative z-10 container mx-auto px-4 py-8 max-w-6xl flex flex-col gap-8">
+      <main className="relative z-10 container mx-auto px-4 py-8 max-w-lg mb-20 flex flex-col gap-8">
 
         {/* Sim Mode Banner */}
         {simMode && (
@@ -101,47 +103,19 @@ function App() {
           </div>
         )}
 
-        {/* 1. Smart SOS Interface */}
-        <SOSButton setPanicMode={setIsPanicMode} />
+        {/* Dynamic Route Content */}
+        <Routes>
+          <Route path="/" element={<Home setPanicMode={setIsPanicMode} />} />
+          <Route path="/map" element={<MapPage />} />
+          <Route path="/defense" element={<DefensePage />} />
+          <Route path="/vault" element={<VaultPage />} />
+          <Route path="/hub" element={<HubPage />} />
+        </Routes>
 
-        {/* Shadow Tracker (Auto-SOS) */}
-        <div className="w-full max-w-md mx-auto mb-6">
-            <ShadowTracker setPanicMode={setIsPanicMode} />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Main Dashboard Grid */}
-
-          <div className="flex flex-col gap-6 lg:col-span-2">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {/* 2. Safety Score */}
-              <SafetyScore />
-
-              {/* 3. Knowledge Hub */}
-              <EmpowermentHub />
-            </div>
-
-            {/* 4. Safe Zone Heatmap spanning full width of its column */}
-            <SafeZoneMap />
-          </div>
-
-          <div className="flex flex-col gap-6">
-            {/* 5. Defense Tools & Vault */}
-            <DefenseTools />
-            <EmergencyVault />
-          </div>
-
-        </div>
       </main>
 
-      <footer className="relative z-10 border-t border-[var(--glass-border)] mt-12 py-8 text-center bg-white/40 dark:bg-black/40 backdrop-blur-sm transition-colors">
-        <p className="text-transparent bg-clip-text bg-gradient-to-r from-gray-500 to-gray-400 dark:from-gray-400 dark:to-gray-200 font-medium italic mb-2">
-          "Technology should not just connect people — it should protect them."
-        </p>
-        <p className="text-xs text-gray-500 dark:text-gray-500 tracking-widest uppercase">
-          SHEGUARDIAN © 2026 Social Impact Hackathon
-        </p>
-      </footer>
+      {/* Bottom Navigation */}
+      <BottomNav />
 
       {/* 6. AI Chatbot Widget */}
       <AIChatbot />
