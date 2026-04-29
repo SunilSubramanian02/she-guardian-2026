@@ -195,4 +195,31 @@
     .animate-float {
         animation: float 4s ease-in-out infinite;
     }
+
+    /* Panic Mode Overrides */
+    .panic-mode-active {
+        @apply bg-red-950 text-red-100;
+        animation: panic-pulse 2s infinite alternate;
+    }
+
+    .panic-mode-active .glass-card {
+        @apply bg-red-900/30 border-red-500/30 shadow-[0_0_30px_rgba(255,0,0,0.2)];
+    }
+
+    .panic-mode-active header {
+        @apply bg-red-950/90 border-red-500/20 shadow-[0_4px_30px_rgba(255,0,0,0.3)];
+    }
+
+    .panic-mode-active p, .panic-mode-active span, .panic-mode-active h1, .panic-mode-active h2, .panic-mode-active h3 {
+        @apply text-red-50;
+    }
+
+    @keyframes panic-pulse {
+        0% {
+            background-color: #450a0a; /* bg-red-950 */
+        }
+        100% {
+            background-color: #7f1d1d; /* bg-red-900 */
+        }
+    }
 }

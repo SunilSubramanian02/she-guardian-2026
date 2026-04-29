@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { startStrobeLight, stopStrobeLight, requestMaxBrightness, releaseWakeLock } from '../utils/hardwareApis';
+import AudioVisualizer from './AudioVisualizer';
 
-const SOSButton = () => {
+const SOSButton = ({ setPanicMode }) => {
     const [status, setStatus] = useState('IDLE'); // IDLE, HOLDING, COUNTDOWN, DISPATCHED, FAILED
     const [holdProgress, setHoldProgress] = useState(0); // 0 to 100
     const [count, setCount] = useState(5);
@@ -16,6 +18,9 @@ const SOSButton = () => {
             clearTimeout(holdTimer.current);
             clearInterval(progressTimer.current);
             clearInterval(countdownTimer.current);
+            stopStrobeLight();
+            releaseWakeLock();
+            if (setPanicMode) setPanicMode(false);
         };
     }, []);
 
@@ -56,6 +61,11 @@ const SOSButton = () => {
         setStatus('COUNTDOWN');
         setCount(5);
         setHoldProgress(100);
+
+        // Activate Panic Mode and Hardware
+        if (setPanicMode) setPanicMode(true);
+        requestMaxBrightness();
+        startStrobeLight();
 
         // Shake UI
         document.body.classList.add('shaking');
@@ -107,6 +117,11 @@ const SOSButton = () => {
         clearInterval(countdownTimer.current);
         setStatus('IDLE');
         setHoldProgress(0);
+        
+        // Deactivate Panic Mode and Hardware
+        if (setPanicMode) setPanicMode(false);
+        stopStrobeLight();
+        releaseWakeLock();
     };
 
     // SVG Circle styling
@@ -213,6 +228,11 @@ const SOSButton = () => {
                                 </svg>
                             </div>
                         )}
+
+                        {/* Audio Visualizer Component */}
+                        <div className="w-full mb-8">
+                            <AudioVisualizer isActive={status === 'COUNTDOWN' || status === 'DISPATCHED'} />
+                        </div>
 
                         <div className="w-full flex flex-col gap-3 mb-8">
                             <button onClick={() => window.open('tel:100', '_self')} className="glass-btn justify-center py-3 text-lg hover:border-red-500/50 w-full group">

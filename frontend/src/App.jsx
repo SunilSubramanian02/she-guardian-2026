@@ -7,11 +7,14 @@ import SafeZoneMap from './components/SafeZoneMap';
 import EmergencyVault from './components/EmergencyVault';
 import DefenseTools from './components/DefenseTools';
 import EmpowermentHub from './components/EmpowermentHub';
+import ShadowTracker from './components/ShadowTracker';
 import AIChatbot from './components/AIChatbot';
+import StealthExit from './components/StealthExit';
 
 function App() {
   const [simMode, setSimMode] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isPanicMode, setIsPanicMode] = useState(false);
 
   // Apply dark mode class to HTML root
   useEffect(() => {
@@ -30,7 +33,11 @@ function App() {
   };
 
   return (
-    <div className={`min-h-screen transition-colors duration-500 ${simMode ? 'bg-red-50 dark:bg-[#1a0505]' : 'bg-[var(--bg-primary)]'}`}>
+    <div className={`min-h-screen transition-all duration-700 ${
+      isPanicMode ? 'panic-mode-active bg-red-950 shadow-[inset_0_0_150px_rgba(255,0,0,0.5)]' : 
+      simMode ? 'bg-red-50 dark:bg-[#1a0505]' : 'bg-[var(--bg-primary)]'
+    }`}>
+      <StealthExit />
 
       {/* Advanced Animated Background */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPjxyZWN0IHdpZHRoPSI4IiBoZWlnaHQ9IjgiIGZpbGw9IiMwYTBhMGYiPjwvcmVjdD48cGF0aCBkPSJNMCAwbDhfOFpNOCAwbC04IDgiIHN0cm9rZT0iIzFhMWEyNCIgc3Ryb2tlLXdpZHRoPSIxIj48L3BhdGg+PC9zdmc+')] opacity-5 dark:opacity-20 transition-all duration-500 invert dark:invert-0">
@@ -95,7 +102,12 @@ function App() {
         )}
 
         {/* 1. Smart SOS Interface */}
-        <SOSButton />
+        <SOSButton setPanicMode={setIsPanicMode} />
+
+        {/* Shadow Tracker (Auto-SOS) */}
+        <div className="w-full max-w-md mx-auto mb-6">
+            <ShadowTracker setPanicMode={setIsPanicMode} />
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Main Dashboard Grid */}

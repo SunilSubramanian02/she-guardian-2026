@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const multer = require('multer');
+const { GoogleGenAI } = require('@google/genai');
 require('dotenv').config();
 
 const Contact = require('./models/Contact');
@@ -23,6 +25,12 @@ const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/sheguardia
 mongoose.connect(MONGO_URI)
     .then(() => console.log('✅ Connected to MongoDB Desktop/Local'))
     .catch(err => console.error('❌ MongoDB Connection Error:', err));
+
+// Multer setup for in-memory audio uploads
+const upload = multer({ storage: multer.memoryStorage() });
+
+// Initialize Gemini Client
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 // --- API ROUTES ---
 
@@ -66,6 +74,53 @@ app.post('/api/route', (req, res) => {
             eta: "15 mins"
         });
     }, 1500);
+});
+
+// 4. Audio Danger Analysis (Gemini AI)
+app.post('/api/audio-analysis', upload.single('audio'), async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ success: false, message: 'No audio file uploaded.' });
+        }
+
+        console.log(`\n🎙️ [AUDIO] Received audio chunk for analysis. Size: ${req.file.size} bytes`);
+
+        if (!process.env.GEMINI_API_KEY) {
+            console.warn('⚠️ GEMINI_API_KEY is not set. Returning mocked danger analysis.');
+            return res.json({ 
+                success: true, 
+                analysis: 'MOCKED RESPONSE: Audio levels appear normal. No explicit danger detected in simulation.' 
+            });
+        }
+
+        // Convert buffer to base64 for Gemini API
+        const base64Data = req.file.buffer.toString('base64');
+        const mimeType = req.file.mimetype || 'audio/webm';
+
+        const prompt = "You are a crisis analysis AI. Analyze this short audio clip recorded during an emergency SOS activation. Look for indicators of struggle, aggressive voices, screaming, or environmental hazards. Respond with a concise 1-2 sentence risk assessment.";
+
+        const response = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: [
+                prompt,
+                {
+                    inlineData: {
+                        data: base64Data,
+                        mimeType: mimeType
+                    }
+                }
+            ]
+        });
+
+        const analysisResult = response.text;
+        console.log(`🧠 [GEMINI ANALYSIS]: ${analysisResult}`);
+
+        res.json({ success: true, analysis: analysisResult });
+
+    } catch (error) {
+        console.error('Error during audio analysis:', error);
+        res.status(500).json({ success: false, message: 'Failed to analyze audio.' });
+    }
 });
 
 // 4. Seed Default Data (Run Once)

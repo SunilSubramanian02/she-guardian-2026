@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 const DefenseTools = () => {
     const [callStatus, setCallStatus] = useState('IDLE'); // IDLE, SCHEDULING, INCOMING, ACTIVE
@@ -7,6 +7,21 @@ const DefenseTools = () => {
     const [activeSecs, setActiveSecs] = useState(0);
 
     const [droneStatus, setDroneStatus] = useState('IDLE'); // IDLE, LOCATING, EN_ROUTE
+    
+    // Audio ref for fake call
+    const audioRef = useRef(null);
+
+    useEffect(() => {
+        // Pre-load audio. We'll use a placeholder path, and if it fails, we fall back to speech synthesis.
+        audioRef.current = new Audio('/audio/fake_call.mp3');
+        
+        return () => {
+            if (audioRef.current) {
+                audioRef.current.pause();
+                audioRef.current.currentTime = 0;
+            }
+        };
+    }, []);
 
     // FAKE CALL LOGIC
     const handleFakeCall = () => {
@@ -27,6 +42,18 @@ const DefenseTools = () => {
         setCallStatus('ACTIVE');
         if (navigator.vibrate) navigator.vibrate(0);
 
+        // Attempt to play audio file, fallback to Web Speech API
+        if (audioRef.current) {
+            audioRef.current.play().catch((e) => {
+                console.warn("Audio file not found or blocked. Using Speech Synthesis fallback.", e);
+                const utterance = new SpeechSynthesisUtterance("Hey, I'm just 2 minutes away. I can see you now.");
+                utterance.voice = speechSynthesis.getVoices().find(v => v.name.includes('Google UK English Male') || v.lang.includes('en'));
+                utterance.rate = 0.9;
+                utterance.pitch = 1;
+                speechSynthesis.speak(utterance);
+            });
+        }
+
         let secs = 0;
         const activeCallInterval = setInterval(() => {
             secs++;
@@ -41,6 +68,14 @@ const DefenseTools = () => {
         setCallStatus('IDLE');
         if (navigator.vibrate) navigator.vibrate(0);
         if (window.activeCallTimer) clearInterval(window.activeCallTimer);
+        
+        // Stop audio
+        if (audioRef.current) {
+            audioRef.current.pause();
+            audioRef.current.currentTime = 0;
+        }
+        speechSynthesis.cancel(); // Stop fallback speech
+
         setActiveMins(0);
         setActiveSecs(0);
         setCallDelay(5);
@@ -144,40 +179,52 @@ const DefenseTools = () => {
                 </div>
             </section>
 
-            {/* Fake Call Full Screen Modal */}
+            {/* Fake Call Full Screen Modal - Antigravity UI */}
             {(callStatus === 'INCOMING' || callStatus === 'ACTIVE') && (
-                <div className="fixed inset-0 bg-white dark:bg-[#0a0a0f] z-[2000] flex flex-col justify-between items-center py-16 animate-in slide-in-from-bottom-full duration-300">
+                <div className="fixed inset-0 z-[3000] flex flex-col justify-between items-center py-16 bg-black/80 backdrop-blur-3xl animate-in slide-in-from-bottom-full duration-500 shadow-[inset_0_0_150px_rgba(0,0,0,0.8)]">
+                    
+                    {/* Glowing ambient background depending on status */}
+                    <div className={`absolute top-1/4 w-full h-[50vh] blur-[100px] rounded-full pointer-events-none opacity-20 transition-all duration-1000 ${callStatus === 'INCOMING' ? 'bg-neon-blue' : 'bg-safe-green'}`}></div>
 
-                    <div className="flex flex-col items-center mt-12 text-center w-full px-8">
+                    <div className="flex flex-col items-center mt-12 text-center w-full px-8 relative z-10">
                         {/* Caller display */}
-                        <div className="w-24 h-24 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-6 border-2 border-gray-300 dark:border-gray-700 shadow-xl relative backdrop-blur-md">
-                            <i className="fa-solid fa-user text-4xl text-gray-400"></i>
+                        <div className="w-32 h-32 bg-gray-900 rounded-full flex items-center justify-center mb-8 border border-white/10 shadow-[0_0_50px_rgba(255,255,255,0.05)] relative">
+                            <i className="fa-solid fa-user-shield text-5xl text-gray-500 drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]"></i>
                             {callStatus === 'INCOMING' && (
-                                <div className="absolute inset-0 rounded-full border-2 border-blue-500 animate-ping opacity-50"></div>
+                                <>
+                                    <div className="absolute inset-0 rounded-full border border-neon-blue animate-[ping_2s_ease-out_infinite] opacity-50 shadow-[0_0_15px_rgba(0,240,255,0.8)]"></div>
+                                    <div className="absolute inset-0 rounded-full border border-neon-blue animate-[ping_2.5s_ease-out_infinite] opacity-30 shadow-[0_0_15px_rgba(0,240,255,0.5)]"></div>
+                                </>
+                            )}
+                            {callStatus === 'ACTIVE' && (
+                                <div className="absolute inset-0 rounded-full border border-safe-green opacity-80 shadow-[0_0_30px_rgba(57,255,20,0.5)]"></div>
                             )}
                         </div>
 
-                        <h1 className="text-4xl font-normal text-gray-900 dark:text-white mb-2 tracking-wide">Dad</h1>
-                        <p className="text-lg text-gray-600 dark:text-gray-400 font-light tracking-widest">
-                            {callStatus === 'INCOMING' ? 'Mobile' : `${activeMins.toString().padStart(2, '0')}:${activeSecs.toString().padStart(2, '0')}`}
+                        <h1 className="text-4xl font-light text-white mb-3 tracking-widest drop-shadow-md">Emergency Contact</h1>
+                        <p className="text-xl text-neon-blue font-mono tracking-widest shadow-neon-blue drop-shadow-[0_0_5px_rgba(0,240,255,0.8)]">
+                            {callStatus === 'INCOMING' ? 'Incoming Call...' : `${activeMins.toString().padStart(2, '0')}:${activeSecs.toString().padStart(2, '0')}`}
                         </p>
                     </div>
 
-                    <div className="flex justify-between w-full max-w-xs px-6 mb-12">
+                    <div className="flex justify-evenly w-full max-w-sm px-6 mb-12 relative z-10 gap-8">
+                        {/* Decline Button */}
                         <button
-                            className={`flex items-center justify-center rounded-full transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-xl
-                                ${callStatus === 'ACTIVE' ? 'w-full h-16 bg-red-500 hover:bg-red-400 bg-opacity-90' : 'w-16 h-16 bg-red-500 hover:bg-red-400 bg-opacity-90'}`}
+                            className={`relative flex items-center justify-center rounded-full transition-all duration-300 transform hover:scale-105 active:scale-95
+                                ${callStatus === 'ACTIVE' ? 'w-full h-16 bg-red-600/80 border border-red-500 shadow-[0_0_30px_rgba(220,38,38,0.6)]' : 'w-20 h-20 bg-red-600/80 border border-red-500 shadow-[0_0_30px_rgba(220,38,38,0.6)]'}`}
                             onClick={declineCall}
                         >
-                            <i className={`fa-solid fa-phone-slash text-2xl text-white ${callStatus === 'ACTIVE' ? '' : 'transform -scale-x-100'}`}></i>
+                            <i className="fa-solid fa-phone-slash text-2xl text-white drop-shadow-lg"></i>
                         </button>
 
+                        {/* Accept Button */}
                         {callStatus === 'INCOMING' && (
                             <button
-                                className="w-16 h-16 rounded-full bg-green-500 hover:bg-green-400 bg-opacity-90 flex items-center justify-center transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(34,197,94,0.4)] animate-bounce"
+                                className="relative w-20 h-20 rounded-full bg-safe-green/80 border border-safe-green flex items-center justify-center transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-[0_0_40px_rgba(57,255,20,0.8)] animate-bounce"
                                 onClick={answerCall}
                             >
-                                <i className="fa-solid fa-phone text-2xl text-white"></i>
+                                <div className="absolute inset-0 rounded-full bg-safe-green animate-ping opacity-30"></div>
+                                <i className="fa-solid fa-phone text-2xl text-white drop-shadow-lg"></i>
                             </button>
                         )}
                     </div>
