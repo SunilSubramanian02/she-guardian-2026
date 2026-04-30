@@ -65,18 +65,37 @@ const ShadowTracker = ({ setPanicMode }) => {
 
     const captureLocation = () => {
         if ("geolocation" in navigator) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const coords = `${position.coords.latitude}, ${position.coords.longitude}`;
-                    setLastLocation(coords);
-                    console.log(`[SHADOW TRACKER] Coordinates captured: ${coords}`);
-                },
-                (error) => {
-                    console.error("Error capturing location:", error);
+            const successCb = (position) => {
+                const coords = `${position.coords.latitude}, ${position.coords.longitude}`;
+                setLastLocation(coords);
+                setErrorMsg(''); // Clear error on successful fix
+                console.log(`[SHADOW TRACKER] Coordinates captured: ${coords}`);
+            };
+
+            const errorCb = (error) => {
+                console.error("Error capturing location:", error);
+                if (error.code === 1) { // PERMISSION_DENIED
+                    setErrorMsg("Location access denied. Please enable GPS permissions.");
+                } else if (error.code === 3) { // TIMEOUT
+                    console.log("High accuracy GPS timed out, trying low accuracy...");
+                    // Fallback to low accuracy (cell tower / Wi-Fi)
+                    navigator.geolocation.getCurrentPosition(
+                        successCb,
+                        (fallbackErr) => {
+                            setErrorMsg("GPS signal weak. Using last known location.");
+                        },
+                        { enableHighAccuracy: false, timeout: 15000, maximumAge: 60000 }
+                    );
+                } else {
                     setErrorMsg("GPS signal lost. Attempting to use last known location.");
-                },
-                { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-            );
+                }
+            };
+
+            navigator.geolocation.getCurrentPosition(successCb, errorCb, { 
+                enableHighAccuracy: true, 
+                timeout: 15000, // Increased timeout to 15s to allow mobile devices to lock GPS
+                maximumAge: 5000 
+            });
         } else {
             setErrorMsg("Geolocation is not supported by this browser.");
         }

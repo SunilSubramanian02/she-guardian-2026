@@ -4,20 +4,27 @@ const VoiceTrigger = ({ setPanicMode }) => {
     const [isListening, setIsListening] = useState(false);
     const [transcript, setTranscript] = useState('');
     const recognitionRef = useRef(null);
+    const isListeningRef = useRef(isListening);
+
+    // Sync isListening to ref for access in event listeners
+    useEffect(() => {
+        isListeningRef.current = isListening;
+    }, [isListening]);
 
     // Safety trigger phrases
     const safePhrases = ['help me', 'call my brother', 'code red', 'i need a pizza', 'stop it'];
 
     useEffect(() => {
-        // Initialize Speech Recognition
+        // Initialize Speech Recognition once
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (SpeechRecognition) {
-            recognitionRef.current = new SpeechRecognition();
-            recognitionRef.current.continuous = true;
-            recognitionRef.current.interimResults = true;
-            recognitionRef.current.lang = 'en-US';
+            const recognition = new SpeechRecognition();
+            // continuous might be flaky on mobile, but keep it true for best effort
+            recognition.continuous = true;
+            recognition.interimResults = true;
+            recognition.lang = 'en-US';
 
-            recognitionRef.current.onresult = (event) => {
+            recognition.onresult = (event) => {
                 let currentTranscript = '';
                 for (let i = event.resultIndex; i < event.results.length; i++) {
                     currentTranscript += event.results[i][0].transcript.toLowerCase();
@@ -32,21 +39,27 @@ const VoiceTrigger = ({ setPanicMode }) => {
                 }
             };
 
-            recognitionRef.current.onerror = (event) => {
+            recognition.onerror = (event) => {
                 console.error("Speech Recognition Error", event.error);
-                if (event.error === 'not-allowed') setIsListening(false);
+                if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
+                    setIsListening(false);
+                }
             };
 
-            recognitionRef.current.onend = () => {
+            recognition.onend = () => {
                 // Auto-restart if it stops while supposedly listening (unless intentionally stopped)
-                if (isListening && recognitionRef.current) {
+                if (isListeningRef.current && recognitionRef.current) {
                     try {
                         recognitionRef.current.start();
                     } catch (e) {
                         console.log("Restarting speech recognition...", e);
+                        // If it fails to restart automatically (e.g. mobile browser restrictions), turn off the UI
+                        setIsListening(false);
                     }
                 }
             };
+
+            recognitionRef.current = recognition;
         }
 
         return () => {
@@ -54,24 +67,25 @@ const VoiceTrigger = ({ setPanicMode }) => {
                 recognitionRef.current.stop();
             }
         };
-    }, [isListening]);
+    }, []); // Empty dependency array means this runs once on mount
 
     const toggleListening = () => {
         if (!recognitionRef.current) {
-            alert("Your browser does not support Voice Triggers. Please use Chrome.");
+            alert("Your browser does not support Voice Triggers. Please use Chrome or Safari 14.1+.");
             return;
         }
 
         if (isListening) {
+            setIsListening(false); // This updates the ref via useEffect
             recognitionRef.current.stop();
-            setIsListening(false);
         } else {
             setTranscript('');
+            setIsListening(true);
             try {
                 recognitionRef.current.start();
-                setIsListening(true);
             } catch (e) {
-                console.error(e);
+                console.error("Failed to start speech recognition:", e);
+                // In some cases starting might fail if it's already listening internally
             }
         }
     };
