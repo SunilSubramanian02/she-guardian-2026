@@ -6,7 +6,15 @@ module.exports = {
         "./src/**/*.{js,ts,jsx,tsx}",
     ],
     theme: {
-        extend: {},
+        extend: {
+            colors: {
+                'neon-pink': 'var(--neon-pink)',
+                'neon-blue': 'var(--neon-blue)',
+                'safe-green': 'var(--safe-green)',
+                'bg-primary': 'var(--bg-primary)',
+                'bg-secondary': 'var(--bg-secondary)',
+            }
+        },
     },
     plugins: [],
 }
